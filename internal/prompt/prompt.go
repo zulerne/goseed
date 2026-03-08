@@ -31,6 +31,10 @@ func Run(cfg *config.ProjectConfig) error {
 
 	km := huh.NewDefaultKeyMap()
 	km.MultiSelect.Toggle = key.NewBinding(key.WithKeys(" ", "x"), key.WithHelp("space", "toggle"))
+	km.MultiSelect.Filter.SetEnabled(false)
+	km.MultiSelect.SelectAll = key.NewBinding(key.WithDisabled())
+	km.MultiSelect.SelectNone = key.NewBinding(key.WithDisabled())
+	km.Select.Filter.SetEnabled(false)
 
 	form := huh.NewForm(
 		// Group 1: Project identity
