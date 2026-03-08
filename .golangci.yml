@@ -1,0 +1,75 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  default: none
+  enable:
+    # Default linters
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    # Code quality
+    - revive
+    - gosec
+    - gocritic
+    - prealloc
+    - unconvert
+    - copyloopvar    # catches unsafe loop variable captures
+    - intrange       # suggests for i := range n
+    - modernize      # suggests newer Go idioms
+    - nolintlint     # validates //nolint directives
+    - perfsprint     # faster alternatives to fmt.Sprintf
+    # Error handling
+    - wrapcheck
+    - errorlint
+
+    ## --- HTTP/API projects: uncomment these ---
+    # - bodyclose      # checks HTTP response body is closed
+    # - noctx          # checks that http requests use context
+    ## --- Database projects: uncomment these ---
+    # - sqlclosecheck  # checks sql.Rows/Stmt are closed
+    # - rowserrcheck   # checks sql.Rows.Err is checked
+    ## --- slog users: uncomment this ---
+    # - sloglint       # consistent log/slog usage
+
+  settings:
+    govet:
+      enable:
+        - shadow
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+      ## --- TUI (Bubble Tea) projects: uncomment this ---
+      # disabled-checks:
+      #   - hugeParam  # Bubble Tea requires value receivers on tea.Model methods
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
+
+  exclusions:
+    presets:
+      - comments
+      - std-error-handling
+      - common-false-positives
+    rules:
+      - path: _test\.go
+        linters:
+          - goconst
+          - gosec
+          - gocritic
+          - wrapcheck
