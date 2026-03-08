@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" fill="none">
+  <defs>
+    <linearGradient id="seedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8e6cf"/>
+      <stop offset="100%" style="stop-color:#55b89a"/>
+    </linearGradient>
+    <linearGradient id="dotGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#55b89a;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#a8e6cf;stop-opacity:0.15"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="720" height="200" rx="16" fill="#1a1b26"/>
+  
+  <!-- Subtle grid dots -->
+  <g opacity="0.08">
+    <circle cx="40" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="80" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="120" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="160" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="200" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="40" cy="80" r="1.2" fill="#a8e6cf"/>
+    <circle cx="80" cy="80" r="1.2" fill="#a8e6cf"/>
+    <circle cx="40" cy="120" r="1.2" fill="#a8e6cf"/>
+    <circle cx="80" cy="120" r="1.2" fill="#a8e6cf"/>
+    <circle cx="120" cy="120" r="1.2" fill="#a8e6cf"/>
+    <circle cx="40" cy="160" r="1.2" fill="#a8e6cf"/>
+    <circle cx="600" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="640" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="680" cy="40" r="1.2" fill="#a8e6cf"/>
+    <circle cx="640" cy="80" r="1.2" fill="#a8e6cf"/>
+    <circle cx="680" cy="80" r="1.2" fill="#a8e6cf"/>
+    <circle cx="680" cy="120" r="1.2" fill="#a8e6cf"/>
+    <circle cx="640" cy="120" r="1.2" fill="#a8e6cf"/>
+    <circle cx="600" cy="120" r="1.2" fill="#a8e6cf"/>
+    <circle cx="680" cy="160" r="1.2" fill="#a8e6cf"/>
+    <circle cx="640" cy="160" r="1.2" fill="#a8e6cf"/>
+  </g>
+
+  <!-- Seedling icon -->
+  <g transform="translate(195, 52)">
+    <!-- Stem -->
+    <path d="M32 92 C32 72 32 60 32 48" stroke="url(#seedGrad)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <!-- Left leaf -->
+    <path d="M32 62 C22 52 10 50 6 42 C4 36 8 28 18 30 C26 32 30 44 32 54" fill="#55b89a" opacity="0.85"/>
+    <!-- Right leaf -->
+    <path d="M32 48 C42 38 54 36 58 28 C60 22 56 14 46 16 C38 18 34 30 32 40" fill="#a8e6cf" opacity="0.9"/>
+    <!-- Seed base -->
+    <ellipse cx="32" cy="94" rx="10" ry="5" fill="#55b89a" opacity="0.4"/>
+  </g>
+  
+  <!-- "goseed" text -->
+  <text x="268" y="115" font-family="'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="56" font-weight="700" letter-spacing="-1" fill="#e0e0e0">
+    go<tspan fill="url(#seedGrad)">seed</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <text x="270" y="145" font-family="'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="14" fill="#8b8fa3" letter-spacing="0.5">
+    scaffold Go projects with best practices
+  </text>
+</svg>

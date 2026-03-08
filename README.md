@@ -1,4 +1,8 @@
-# goseed
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="goseed-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="goseed-light.svg">
+  <img alt="goseed" src="goseed-light.svg" width="720">
+</picture>
 
 [![CI](https://github.com/zulerne/goseed/actions/workflows/ci.yml/badge.svg)](https://github.com/zulerne/goseed/actions/workflows/ci.yml)
 [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://go.dev)
