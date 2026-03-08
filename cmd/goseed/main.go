@@ -69,7 +69,7 @@ func newRootCmd() *cobra.Command {
 	f.BoolVar(&cfg.UseGoReleaser, "goreleaser", cfg.UseGoReleaser, "Include GoReleaser")
 	f.BoolVar(&cfg.UseDocker, "docker", cfg.UseDocker, "Include Dockerfile")
 	f.BoolVar(&cfg.UseEnvExample, "env-example", cfg.UseEnvExample, "Include .env.example")
-	f.BoolVar(&cfg.UseRenovate, "renovate", cfg.UseRenovate, "Include Renovate config")
+	f.BoolVar(&cfg.UseDependabot, "dependabot", cfg.UseDependabot, "Include Dependabot config")
 	f.BoolVar(&cfg.UseClaude, "claude", cfg.UseClaude, "Include Claude Code files")
 	f.BoolVar(&cfg.UseClaudeCI, "claude-ci", cfg.UseClaudeCI, "Include Claude CI workflows")
 	f.BoolVar(&noInteractive, "no-interactive", false, "Use flags and defaults only")

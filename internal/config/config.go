@@ -16,9 +16,9 @@ type ProjectConfig struct {
 	UseLinter     bool   // .golangci.yml
 	BuildTool     string // "taskfile" | "makefile" | "none"
 	UseGoReleaser bool   // .goreleaser.yaml
-	UseDocker     bool   // Dockerfile + docker-compose
+	UseDocker     bool   // Dockerfile
 	UseEnvExample bool   // .env.example
-	UseRenovate   bool   // renovate.json
+	UseDependabot bool   // .github/dependabot.yml
 
 	// Claude Code
 	UseClaude   bool // CLAUDE.md + .claude/rules/
@@ -43,10 +43,10 @@ func Defaults() ProjectConfig {
 		BuildTool:     "taskfile",
 		UseGoReleaser: true,
 		UseDocker:     false,
-		UseEnvExample: false,
-		UseRenovate:   true,
-		UseClaude:     true,
-		UseClaudeCI:   true,
+		UseEnvExample: true,
+		UseDependabot: false,
+		UseClaude:     false,
+		UseClaudeCI:   false,
 		HTTPFramework: "stdlib",
 		Year:          time.Now().Year(),
 	}

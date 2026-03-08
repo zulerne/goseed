@@ -3,8 +3,10 @@ package prompt
 import (
 	"errors"
 	"fmt"
+	"os/exec"
 	"os/user"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/charmbracelet/huh"
@@ -22,6 +24,8 @@ func Run(cfg *config.ProjectConfig) error {
 	var license string
 	var buildTool string
 	var httpFramework string
+	var features []string
+	var claudeFeatures []string
 
 	form := huh.NewForm(
 		// Group 1: Project basics
@@ -39,10 +43,19 @@ func Run(cfg *config.ProjectConfig) error {
 
 			huh.NewInput().
 				Title("Module path").
-				Description("Go module path").
-				Placeholder(fmt.Sprintf("github.com/%s/myapp", username)).
+				Description("Go module path (leave empty for default)").
+				PlaceholderFunc(func() string {
+					name := cfg.ProjectName
+					if name == "" {
+						name = "myapp"
+					}
+					return fmt.Sprintf("github.com/%s/%s", username, name)
+				}, &cfg.ProjectName).
 				Value(&cfg.ModulePath).
 				Validate(func(s string) error {
+					if s == "" {
+						return nil
+					}
 					if !strings.Contains(s, "/") {
 						return errors.New("must contain at least one /")
 					}
@@ -73,12 +86,8 @@ func Run(cfg *config.ProjectConfig) error {
 				Value(&license),
 		),
 
-		// Group 2: Build tooling
+		// Group 2: Tooling
 		huh.NewGroup(
-			huh.NewConfirm().
-				Title("Include golangci-lint config?").
-				Value(&cfg.UseLinter),
-
 			huh.NewSelect[string]().
 				Title("Build tool").
 				Options(
@@ -88,38 +97,30 @@ func Run(cfg *config.ProjectConfig) error {
 				).
 				Value(&buildTool),
 
-			huh.NewConfirm().
-				Title("Include GoReleaser?").
-				Value(&cfg.UseGoReleaser),
+			huh.NewMultiSelect[string]().
+				Title("Optional features").
+				Options(
+					huh.NewOption("golangci-lint", "linter").Selected(cfg.UseLinter),
+					huh.NewOption("GoReleaser", "goreleaser").Selected(cfg.UseGoReleaser),
+					huh.NewOption(".env.example", "env").Selected(cfg.UseEnvExample),
+					huh.NewOption("Dockerfile", "docker").Selected(cfg.UseDocker),
+					huh.NewOption("Dependabot", "dependabot").Selected(cfg.UseDependabot),
+				).
+				Value(&features),
 		),
 
-		// Group 3: Extras
+		// Group 3: Claude Code
 		huh.NewGroup(
-			huh.NewConfirm().
-				Title("Include Dockerfile?").
-				Value(&cfg.UseDocker),
-
-			huh.NewConfirm().
-				Title("Include .env.example?").
-				Value(&cfg.UseEnvExample),
-
-			huh.NewConfirm().
-				Title("Include Renovate config?").
-				Value(&cfg.UseRenovate),
+			huh.NewMultiSelect[string]().
+				Title("Claude Code integration").
+				Options(
+					huh.NewOption("CLAUDE.md + .claude/rules", "claude").Selected(cfg.UseClaude),
+					huh.NewOption("CI workflows (review + agent)", "claude-ci").Selected(cfg.UseClaudeCI),
+				).
+				Value(&claudeFeatures),
 		),
 
-		// Group 4: Claude Code
-		huh.NewGroup(
-			huh.NewConfirm().
-				Title("Include CLAUDE.md + .claude/rules?").
-				Value(&cfg.UseClaude),
-
-			huh.NewConfirm().
-				Title("Include Claude CI workflows?").
-				Value(&cfg.UseClaudeCI),
-		),
-
-		// Group 5: Service-specific
+		// Group 4: Service-specific
 		huh.NewGroup(
 			huh.NewSelect[string]().
 				Title("HTTP framework").
@@ -141,6 +142,13 @@ func Run(cfg *config.ProjectConfig) error {
 	cfg.License = license
 	cfg.BuildTool = buildTool
 	cfg.HTTPFramework = httpFramework
+	cfg.UseLinter = slices.Contains(features, "linter")
+	cfg.UseGoReleaser = slices.Contains(features, "goreleaser")
+	cfg.UseDocker = slices.Contains(features, "docker")
+	cfg.UseEnvExample = slices.Contains(features, "env")
+	cfg.UseDependabot = slices.Contains(features, "dependabot")
+	cfg.UseClaude = slices.Contains(claudeFeatures, "claude")
+	cfg.UseClaudeCI = slices.Contains(claudeFeatures, "claude-ci")
 
 	// Infer GitHubOwner from ModulePath
 	cfg.GitHubOwner = inferOwner(cfg.ModulePath)
@@ -163,6 +171,21 @@ func inferOwner(modulePath string) string {
 }
 
 func guessGitHubUser() string {
+	// 1. git config github.user (fast, local)
+	if out, err := exec.Command("git", "config", "github.user").Output(); err == nil {
+		if name := strings.TrimSpace(string(out)); name != "" {
+			return name
+		}
+	}
+
+	// 2. gh CLI (requires auth, may do network call)
+	if out, err := exec.Command("gh", "api", "user", "-q", ".login").Output(); err == nil {
+		if name := strings.TrimSpace(string(out)); name != "" {
+			return name
+		}
+	}
+
+	// 3. System username as fallback
 	u, err := user.Current()
 	if err != nil {
 		return "user"

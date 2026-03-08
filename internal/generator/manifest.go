@@ -21,7 +21,7 @@ func wantsDocker(c *config.ProjectConfig) bool    { return c.UseDocker }
 func wantsClaude(c *config.ProjectConfig) bool    { return c.UseClaude }
 func wantsClaudeCI(c *config.ProjectConfig) bool  { return c.UseClaudeCI }
 func wantsEnv(c *config.ProjectConfig) bool       { return c.UseEnvExample }
-func wantsRenovate(c *config.ProjectConfig) bool  { return c.UseRenovate }
+func wantsDependabot(c *config.ProjectConfig) bool { return c.UseDependabot }
 func wantsLicense(c *config.ProjectConfig) bool   { return c.License != "none" }
 
 // Manifest is the single source of truth for all generated files.
@@ -39,7 +39,7 @@ var Manifest = []FileMapping{
 	{"tooling/Makefile.tmpl", "Makefile", wantsMakefile, true},
 	{"tooling/goreleaser.yaml.tmpl", ".goreleaser.yaml", wantsGoReleaser, true},
 	{"tooling/env.example", ".env.example", wantsEnv, false},
-	{"tooling/renovate.json", "renovate.json", wantsRenovate, false},
+	{"tooling/dependabot.yml", ".github/dependabot.yml", wantsDependabot, false},
 
 	// ── Claude Code ──────────────────────────────────────
 	{"claude/CLAUDE.md.tmpl", "CLAUDE.md", wantsClaude, true},
@@ -54,7 +54,6 @@ var Manifest = []FileMapping{
 
 	// ── Docker ───────────────────────────────────────────
 	{"docker/Dockerfile.tmpl", "Dockerfile", wantsDocker, true},
-	{"docker/docker-compose.yml.tmpl", "docker-compose.yml", wantsDocker, true},
 
 	// ── Library type ─────────────────────────────────────
 	{"library/lib.go.tmpl", "{{.ProjectName}}.go", isLibrary, true},

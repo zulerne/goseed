@@ -53,10 +53,10 @@ goseed --name myapp --module github.com/user/myapp --type service --no-interacti
 | `--linter` | `true` | Include golangci-lint config |
 | `--goreleaser` | `true` | Include GoReleaser |
 | `--docker` | `false` | Include Dockerfile |
-| `--env-example` | `false` | Include .env.example |
-| `--renovate` | `true` | Include Renovate config |
-| `--claude` | `true` | Include Claude Code files |
-| `--claude-ci` | `true` | Include Claude CI workflows |
+| `--env-example` | `true` | Include .env.example |
+| `--dependabot` | `false` | Include Dependabot config |
+| `--claude` | `false` | Include Claude Code files |
+| `--claude-ci` | `false` | Include Claude CI workflows |
 | `--no-interactive` | `false` | Skip TUI, use flags + defaults |
 | `--output-dir` | `.` | Output directory |
 
@@ -86,10 +86,11 @@ Optional (based on choices):
 - `.golangci.yml` — 17+ linters
 - `Taskfile.yml` or `Makefile`
 - `.goreleaser.yaml` + release workflow
-- `Dockerfile` + `docker-compose.yml`
+- `Dockerfile`
+- `.env.example`
+- `.github/dependabot.yml`
 - `CLAUDE.md` + `.claude/rules/go.md`
 - Claude Code CI workflows
-- `renovate.json`
 - `LICENSE` (MIT or Apache 2.0)
 
 ## License

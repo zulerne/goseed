@@ -51,12 +51,4 @@ tasks:
   docker:build:
     desc: Build Docker image
     cmd: docker build -t {{"{{"}} .BINARY_NAME {{"}}"}} .
-
-  docker:up:
-    desc: Start with docker-compose
-    cmd: docker compose up -d
-
-  docker:down:
-    desc: Stop docker-compose
-    cmd: docker compose down
 {{ end }}

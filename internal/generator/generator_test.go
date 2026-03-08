@@ -24,7 +24,7 @@ func TestGenerateLibrary(t *testing.T) {
 		UseDocker:     false,
 		UseClaude:     true,
 		UseClaudeCI:   false,
-		UseRenovate:   false,
+		UseDependabot:   false,
 		GitHubOwner:   "test",
 		Year:          2026,
 	}
@@ -63,7 +63,7 @@ func TestGenerateCLI(t *testing.T) {
 		UseDocker:     false,
 		UseClaude:     false,
 		UseClaudeCI:   false,
-		UseRenovate:   true,
+		UseDependabot:   true,
 		GitHubOwner:   "test",
 		Year:          2026,
 	}
@@ -79,7 +79,7 @@ func TestGenerateCLI(t *testing.T) {
 	mustExist(t, projectDir, "internal/cli/version.go")
 	mustExist(t, projectDir, "Makefile")
 	mustExist(t, projectDir, ".goreleaser.yaml")
-	mustExist(t, projectDir, "renovate.json")
+	mustExist(t, projectDir, ".github/dependabot.yml")
 	mustNotExist(t, projectDir, "LICENSE")
 	mustNotExist(t, projectDir, "Taskfile.yml")
 	mustNotExist(t, projectDir, "Dockerfile")
@@ -102,7 +102,7 @@ func TestGenerateService(t *testing.T) {
 		UseEnvExample: true,
 		UseClaude:     true,
 		UseClaudeCI:   true,
-		UseRenovate:   true,
+		UseDependabot:   true,
 		GitHubOwner:   "test",
 		HTTPFramework: "stdlib",
 		Year:          2026,
@@ -119,7 +119,7 @@ func TestGenerateService(t *testing.T) {
 	mustExist(t, projectDir, "internal/config/config.go")
 	mustExist(t, projectDir, "internal/server/server.go")
 	mustExist(t, projectDir, "Dockerfile")
-	mustExist(t, projectDir, "docker-compose.yml")
+	mustNotExist(t, projectDir, "docker-compose.yml")
 	mustExist(t, projectDir, ".env.example")
 	mustExist(t, projectDir, ".goreleaser.yaml")
 	mustExist(t, projectDir, ".github/workflows/claude-code-review.yml")
