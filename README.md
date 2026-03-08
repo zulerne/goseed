@@ -3,7 +3,8 @@
 [![CI](https://github.com/zulerne/goseed/actions/workflows/ci.yml/badge.svg)](https://github.com/zulerne/goseed/actions/workflows/ci.yml)
 [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zulerne/goseed)](https://goreportcard.com/report/github.com/zulerne/goseed)
-[![Code Size](https://img.shields.io/github/languages/code-size/zulerne/goseed)](https://github.com/zulerne/goseed)
+[![codecov](https://codecov.io/gh/zulerne/goseed/graph/badge.svg?token=DLO44K0FQ2)](https://codecov.io/gh/zulerne/goseed)
+[![Go Reference](https://pkg.go.dev/badge/github.com/zulerne/goseed.svg)](https://pkg.go.dev/github.com/zulerne/goseed)
 [![Release](https://img.shields.io/github/v/release/zulerne/goseed)](https://github.com/zulerne/goseed/releases)
 
 Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
@@ -92,6 +93,10 @@ Optional (based on choices):
 - `CLAUDE.md` + `.claude/rules/go.md`
 - Claude Code CI workflows
 - `LICENSE` (MIT or Apache 2.0)
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
 
 ## License
 
