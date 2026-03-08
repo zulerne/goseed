@@ -35,6 +35,9 @@ go.work.sum
 .DS_Store
 Thumbs.db
 
+# Demo
+demo.gif
+
 # AI assistants
 .gemini/
 !.claude/
