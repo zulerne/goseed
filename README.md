@@ -1,6 +1,14 @@
 # goseed
 
+[![CI](https://github.com/zulerne/goseed/actions/workflows/ci.yml/badge.svg)](https://github.com/zulerne/goseed/actions/workflows/ci.yml)
+[![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://go.dev)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zulerne/goseed)](https://goreportcard.com/report/github.com/zulerne/goseed)
+[![Code Size](https://img.shields.io/github/languages/code-size/zulerne/goseed)](https://github.com/zulerne/goseed)
+[![Release](https://img.shields.io/github/v/release/zulerne/goseed)](https://github.com/zulerne/goseed/releases)
+
 Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
+
+<!-- ![demo](demo.gif) -->
 
 ## Install
 
