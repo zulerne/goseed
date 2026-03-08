@@ -20,6 +20,7 @@ brews:
       owner: zulerne
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    directory: Formula
     homepage: https://github.com/zulerne/goseed
     description: "Scaffold Go projects with best practices"
 
