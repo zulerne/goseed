@@ -8,7 +8,7 @@
 
 Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
 
-<!-- ![demo](demo.gif) -->
+![demo](demo.gif)
 
 ## Install
 
