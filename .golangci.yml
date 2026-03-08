@@ -7,40 +7,23 @@ run:
 linters:
   default: none
   enable:
-    # Default linters
     - errcheck
     - govet
     - ineffassign
     - staticcheck
     - unused
-    # Code quality
     - revive
     - gosec
     - gocritic
     - prealloc
     - unconvert
-    - copyloopvar    # catches unsafe loop variable captures
-    - intrange       # suggests for i := range n
-    - modernize      # suggests newer Go idioms
-    - nolintlint     # validates //nolint directives
-    - perfsprint     # faster alternatives to fmt.Sprintf
-    - unparam        # detects unused function parameters
-    # Error handling
+    - copyloopvar
+    - intrange
+    - modernize
+    - nolintlint
+    - perfsprint
+    - unparam
     - errorlint
-
-    ## --- Stricter projects: uncomment these ---
-    # - wrapcheck      # requires wrapping all errors from external packages
-    # - usetesting     # enforces modern testing patterns (Go 1.24+)
-    # - exptostd       # flags x/exp functions now available in stdlib
-
-    ## --- HTTP/API projects: uncomment these ---
-    # - bodyclose      # checks HTTP response body is closed
-    # - noctx          # checks that http requests use context
-    ## --- Database projects: uncomment these ---
-    # - sqlclosecheck  # checks sql.Rows/Stmt are closed
-    # - rowserrcheck   # checks sql.Rows.Err is checked
-    ## --- slog users: uncomment this ---
-    # - sloglint       # consistent log/slog usage
 
   settings:
     govet:
@@ -53,9 +36,6 @@ linters:
         - opinionated
         - performance
         - style
-      ## --- TUI (Bubble Tea) projects: uncomment this ---
-      # disabled-checks:
-      #   - hugeParam  # Bubble Tea requires value receivers on tea.Model methods
     nolintlint:
       require-explanation: true
       require-specific: true

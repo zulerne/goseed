@@ -1,5 +1,9 @@
 # Go Rules
 
+<!-- NOTE: If you use multiple Go projects, consider moving this file to
+     ~/.claude/rules/go.md so it applies globally to all projects.
+     Having it in both places will duplicate rules in Claude's context. -->
+
 ## Error Handling
 
 - Wrap errors with context: `fmt.Errorf("operation: %w", err)`

@@ -2,10 +2,9 @@
 
 .DEFAULT_GOAL := help
 
-# TODO: Set your binary name and main package path
-BINARY_NAME := app
+BINARY_NAME := {{ .ProjectName }}
 BUILD_DIR := ./bin
-MAIN_PATH := ./cmd/app
+MAIN_PATH := ./cmd/{{ .ProjectName }}
 
 # Run the application
 run:

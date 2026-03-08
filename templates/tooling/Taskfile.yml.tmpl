@@ -1,23 +1,23 @@
 version: "3"
 
 vars:
-  BINARY_NAME: gostart
+  BINARY_NAME: {{ .ProjectName }}
   BUILD_DIR: ./bin
-  MAIN_PATH: ./cmd/gostart
+  MAIN_PATH: ./cmd/{{ .ProjectName }}
 
 tasks:
   run:
     desc: Run the application
-    cmd: go run {{.MAIN_PATH}}
+    cmd: go run {{"{{"}} .MAIN_PATH {{"}}"}}
 
   build:
     desc: Build the binary
-    cmd: go build -o {{.BUILD_DIR}}/{{.BINARY_NAME}} {{.MAIN_PATH}}
+    cmd: go build -o {{"{{"}} .BUILD_DIR {{"}}"}}/{{"{{"}} .BINARY_NAME {{"}}"}} {{"{{"}} .MAIN_PATH {{"}}"}}
 
   clean:
     desc: Remove build artifacts
     cmds:
-      - rm -rf {{.BUILD_DIR}}
+      - rm -rf {{"{{"}} .BUILD_DIR {{"}}"}}
       - rm -f coverage.out coverage.html
 
   test:
@@ -47,3 +47,16 @@ tasks:
   check:
     desc: Run all checks (lint + test)
     deps: [lint, test]
+{{ if .UseDocker }}
+  docker:build:
+    desc: Build Docker image
+    cmd: docker build -t {{"{{"}} .BINARY_NAME {{"}}"}} .
+
+  docker:up:
+    desc: Start with docker-compose
+    cmd: docker compose up -d
+
+  docker:down:
+    desc: Stop docker-compose
+    cmd: docker compose down
+{{ end }}

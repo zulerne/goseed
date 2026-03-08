@@ -1,0 +1,64 @@
+# {{ .ProjectName }}
+{{ if .Description }}
+{{ .Description }}
+{{ end }}
+## Getting Started
+
+### Prerequisites
+
+- [Go](https://go.dev/dl/) {{ .GoVersion }}+
+{{ if eq .BuildTool "taskfile" }}- [Task](https://taskfile.dev/installation/) (optional){{ end }}{{ if eq .BuildTool "makefile" }}- Make (optional){{ end }}
+
+### Installation
+{{ if eq .ProjectType "library" }}
+```bash
+go get {{ .ModulePath }}
+```
+{{ else }}
+```bash
+go install {{ .ModulePath }}/cmd/{{ .ProjectName }}@latest
+```
+{{ end }}
+{{ if eq .ProjectType "library" }}## Usage
+
+```go
+import "{{ .ModulePath }}"
+```
+{{ else }}## Usage
+{{ if eq .BuildTool "taskfile" }}
+```bash
+task run
+```
+{{ else if eq .BuildTool "makefile" }}
+```bash
+make run
+```
+{{ else }}
+```bash
+go run ./cmd/{{ .ProjectName }}
+```
+{{ end }}{{ end }}
+## Development
+{{ if eq .BuildTool "taskfile" }}
+| Command | Description |
+|---|---|
+| `task run` | Run the application |
+| `task build` | Build binary |
+| `task test` | Run tests with race detector |
+| `task lint` | Run golangci-lint |
+| `task check` | Run lint + test |
+{{ else if eq .BuildTool "makefile" }}
+| Command | Description |
+|---|---|
+| `make run` | Run the application |
+| `make build` | Build binary |
+| `make test` | Run tests with race detector |
+| `make lint` | Run golangci-lint |
+| `make check` | Run lint + test |
+{{ end }}
+## License
+{{ if eq .License "MIT" }}
+[MIT](LICENSE)
+{{ else if eq .License "Apache-2.0" }}
+[Apache 2.0](LICENSE)
+{{ end }}

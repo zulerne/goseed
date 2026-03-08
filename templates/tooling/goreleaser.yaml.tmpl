@@ -1,0 +1,41 @@
+version: 2
+
+builds:
+  - main: ./cmd/{{ .ProjectName }}
+    binary: {{ .ProjectName }}
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.version={{"{{"}} .Version {{"}}"}} -X main.commit={{"{{"}} .Commit {{"}}"}}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^chore:"
+      - "^ci:"
+{{ if eq .ProjectType "cli" }}
+brews:
+  - repository:
+      owner: {{ .GitHubOwner }}
+      name: homebrew-tap
+      token: "{{"{{"}} .Env.HOMEBREW_TAP_GITHUB_TOKEN {{"}}"}}"
+    homepage: https://github.com/{{ .GitHubOwner }}/{{ .ProjectName }}
+    description: "{{ .Description }}"
+{{ end }}

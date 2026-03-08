@@ -1,0 +1,82 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  default: none
+  enable:
+    # Default linters
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    # Code quality
+    - revive
+    - gosec
+    - gocritic
+    - prealloc
+    - unconvert
+    - copyloopvar    # catches unsafe loop variable captures
+    - intrange       # suggests for i := range n
+    - modernize      # suggests newer Go idioms
+    - nolintlint     # validates //nolint directives
+    - perfsprint     # faster alternatives to fmt.Sprintf
+    - unparam        # detects unused function parameters
+    # Error handling
+    - errorlint
+{{ if eq .ProjectType "service" }}
+    # HTTP/API
+    - bodyclose      # checks HTTP response body is closed
+    - noctx          # checks that http requests use context
+    # slog
+    - sloglint       # consistent log/slog usage
+{{ end }}
+    ## --- Stricter projects: uncomment these ---
+    # - wrapcheck      # requires wrapping all errors from external packages
+    # - usetesting     # enforces modern testing patterns (Go 1.24+)
+    # - exptostd       # flags x/exp functions now available in stdlib
+{{ if ne .ProjectType "service" }}
+    ## --- HTTP/API projects: uncomment these ---
+    # - bodyclose      # checks HTTP response body is closed
+    # - noctx          # checks that http requests use context
+    ## --- Database projects: uncomment these ---
+    # - sqlclosecheck  # checks sql.Rows/Stmt are closed
+    # - rowserrcheck   # checks sql.Rows.Err is checked
+    ## --- slog users: uncomment this ---
+    # - sloglint       # consistent log/slog usage
+{{ end }}
+  settings:
+    govet:
+      enable:
+        - shadow
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
+
+  exclusions:
+    presets:
+      - comments
+      - std-error-handling
+      - common-false-positives
+    rules:
+      - path: _test\.go
+        linters:
+          - goconst
+          - gosec
+          - gocritic

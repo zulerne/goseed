@@ -1,95 +1,88 @@
-# go-template
+# gostart
 
-Opinionated Go project template with CI, linting, and Claude Code integration — ready to clone and build.
+Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
 
-## What's Included
+## Install
 
+```bash
+brew install zulerne/tap/gostart
 ```
-.
-├── .claude/rules/go.md          # Go coding rules for Claude Code
-├── .editorconfig                # Editor formatting (tabs for Go, spaces for YAML)
-├── .env.example                 # Environment variables skeleton
-├── .github/workflows/
-│   ├── ci.yml                   # Test + lint + govulncheck
-│   ├── claude-code-review.yml   # Automated PR review via Claude Code
-│   ├── claude.yml               # @claude mentions in issues/PRs
-│   └── dependency-review.yml    # Block PRs with vulnerable deps
-├── .gitignore
-├── .golangci.yml                # golangci-lint v2 config
-├── CLAUDE.md                    # Project instructions for Claude Code
-├── Makefile                     # Build automation (traditional)
-├── Taskfile.yml                 # Build automation (modern alternative)
-├── cmd/app/main.go              # Entry point
-└── internal/                    # Application packages
+
+Or build from source:
+
+```bash
+go install github.com/zulerne/goseed/cmd/gostart@latest
 ```
 
 ## Usage
 
-1. **Clone or use as GitHub template**
+### Interactive mode
 
-2. **Find and replace** these placeholders:
-   - `github.com/zulerne/go-template` → your module path (in `go.mod`)
-   - `app` → your binary name (in `Makefile` / `Taskfile.yml`)
-   - `./cmd/app` → your main package path
-   - `zulerne` → your GitHub username (in `claude-code-review.yml`, `claude.yml`)
+```bash
+gostart
+```
 
-3. **Pick your build tool** — keep `Makefile` or `Taskfile.yml`, delete the other
+Walks you through 4 groups of questions (project basics, tooling, Claude Code, service-specific) and generates a ready-to-build project.
 
-4. **Enable project-specific linters** in `.golangci.yml`:
-   - HTTP/API → uncomment `bodyclose`, `noctx`
-   - Database → uncomment `sqlclosecheck`, `rowserrcheck`
-   - TUI (Bubble Tea) → uncomment `hugeParam` disable
-   - slog → uncomment `sloglint`
+### Non-interactive mode
 
-5. **Set up repository secrets:**
-   - `CODECOV_TOKEN` — for coverage uploads
-   - `CLAUDE_CODE_OAUTH_TOKEN` — for Claude Code workflows
+```bash
+gostart --name myapp --module github.com/user/myapp --type service --no-interactive
+```
 
-## CI Pipeline
+### Flags
 
-| Job | What it does |
-|---|---|
-| **test** | `go vet` → `go test -race -shuffle=on` → upload coverage to Codecov |
-| **lint** | golangci-lint with 17+ linters |
-| **vulncheck** | govulncheck — symbol-level vulnerability scanning |
-| **dependency-review** | Blocks PRs introducing known-vulnerable dependencies |
+| Flag | Default | Description |
+|---|---|---|
+| `--name` | | Project name |
+| `--module` | | Go module path |
+| `--type` | | `library`, `cli`, or `service` |
+| `--description` | | One-line project description |
+| `--go-version` | `1.26` | Go version |
+| `--license` | `MIT` | `MIT`, `Apache-2.0`, or `none` |
+| `--build-tool` | `taskfile` | `taskfile`, `makefile`, or `none` |
+| `--http-framework` | `stdlib` | `stdlib` or `chi` (service only) |
+| `--linter` | `true` | Include golangci-lint config |
+| `--goreleaser` | `true` | Include GoReleaser |
+| `--docker` | `false` | Include Dockerfile |
+| `--env-example` | `false` | Include .env.example |
+| `--renovate` | `true` | Include Renovate config |
+| `--claude` | `true` | Include Claude Code files |
+| `--claude-ci` | `true` | Include Claude CI workflows |
+| `--no-interactive` | `false` | Skip TUI, use flags + defaults |
+| `--output-dir` | `.` | Output directory |
 
-## Linters
+## Project Types
 
-Enabled by default — the full list in `.golangci.yml`:
+### Library
 
-**Core:** errcheck, govet, ineffassign, staticcheck, unused
+Generates a Go package with exported functions and table-driven tests.
 
-**Quality:** revive, gosec, gocritic, prealloc, unconvert, copyloopvar, intrange, modernize, nolintlint, perfsprint
+### CLI
 
-**Error handling:** wrapcheck, errorlint
+Generates a cobra-based CLI application with version subcommand and GoReleaser config.
 
-Commented out (enable per project): bodyclose, noctx, sqlclosecheck, rowserrcheck, sloglint
+### Service
 
-## Claude Code Rules
+Generates an HTTP service with graceful shutdown, health endpoint, config from environment, and optional Docker support.
 
-`.claude/rules/go.md` contains Go-specific rules covering:
-- Error handling patterns
-- Concurrency guidelines
-- Modern Go idioms (organized by Go version, up to 1.26)
-- Pre-commit checklist
+## What's Generated
 
-> **Tip:** If you work on multiple Go projects, move this file to `~/.claude/rules/go.md` to apply it globally instead of duplicating per project.
+Every project includes:
+- `.gitignore`, `.editorconfig`
+- `go.mod`, `README.md`
+- CI workflow (test + lint + govulncheck)
+- Dependency review workflow
 
-## Build Commands
-
-Both `Makefile` and `Taskfile.yml` provide the same targets:
-
-| Command | Description |
-|---|---|
-| `run` | Run the application |
-| `build` | Build binary |
-| `test` | Run tests with race detector |
-| `test-cover` / `test:cover` | Run tests with coverage report |
-| `lint` | Run golangci-lint |
-| `check` | Run lint + test |
-| `fmt` | Format code |
-| `clean` | Remove build artifacts |
+Optional (based on choices):
+- `.golangci.yml` — 17+ linters
+- `Taskfile.yml` or `Makefile`
+- `.goreleaser.yaml` + release workflow
+- `Dockerfile` + `docker-compose.yml`
+- `CLAUDE.md` + `.claude/rules/go.md`
+- Claude Code CI workflows
+- `renovate.json`
+- `LICENSE` (MIT or Apache 2.0)
 
 ## License
 

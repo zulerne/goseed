@@ -1,0 +1,20 @@
+# {{ .ProjectName }}
+{{ if .Description }}
+{{ .Description }}
+{{ end }}
+## Project structure
+{{ if eq .ProjectType "library" }}
+- `{{ .ProjectName }}.go` — main package
+- `{{ .ProjectName }}_test.go` — tests
+{{ else }}
+- `cmd/{{ .ProjectName }}/main.go` — CLI entry point
+- `internal/` — application packages
+{{ end }}
+## Code Quality
+{{ if eq .BuildTool "taskfile" }}
+Always run `task lint` before committing. Run `task check` (lint + test) for full validation.
+{{ else if eq .BuildTool "makefile" }}
+Always run `make lint` before committing. Run `make check` (lint + test) for full validation.
+{{ else }}
+Always run `golangci-lint run` before committing.
+{{ end }}

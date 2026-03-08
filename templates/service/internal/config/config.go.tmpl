@@ -1,0 +1,30 @@
+package config
+
+import (
+	"cmp"
+	"fmt"
+	"os"
+)
+
+// Config holds application configuration loaded from environment variables.
+type Config struct {
+	Host string
+	Port string
+	Env  string
+}
+
+// Load reads configuration from environment variables with sensible defaults.
+func Load() (*Config, error) {
+	cfg := &Config{
+		Host: cmp.Or(os.Getenv("HOST"), "localhost"),
+		Port: cmp.Or(os.Getenv("PORT"), "8080"),
+		Env:  cmp.Or(os.Getenv("ENV"), "local"),
+	}
+
+	return cfg, nil
+}
+
+// Addr returns the host:port address string.
+func (c *Config) Addr() string {
+	return fmt.Sprintf("%s:%s", c.Host, c.Port)
+}

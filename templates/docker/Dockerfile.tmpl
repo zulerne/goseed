@@ -1,0 +1,20 @@
+FROM golang:{{ .GoVersion }}-alpine AS builder
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /bin/{{ .ProjectName }} ./cmd/{{ .ProjectName }}
+
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+
+COPY --from=builder /bin/{{ .ProjectName }} /bin/{{ .ProjectName }}
+
+EXPOSE 8080
+
+ENTRYPOINT ["/bin/{{ .ProjectName }}"]

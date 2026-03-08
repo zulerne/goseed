@@ -1,11 +1,15 @@
-# PROJECT_NAME
+# gostart
 
-<!-- TODO: Brief description of what this project does -->
+Interactive CLI tool that scaffolds Go projects (library, CLI, or service) with CI, linting, and Claude Code integration.
 
 ## Project structure
 
-- `cmd/app/main.go` — CLI entry point
-- `internal/` — application packages
+- `cmd/gostart/main.go` — CLI entry point (cobra)
+- `internal/config/` — ProjectConfig struct and defaults
+- `internal/prompt/` — TUI form (charmbracelet/huh)
+- `internal/generator/` — file generation from templates
+- `templates/` — embedded template files
+- `embed.go` — go:embed directive
 
 ## Code Quality
 
