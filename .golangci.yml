@@ -24,9 +24,14 @@ linters:
     - modernize      # suggests newer Go idioms
     - nolintlint     # validates //nolint directives
     - perfsprint     # faster alternatives to fmt.Sprintf
+    - unparam        # detects unused function parameters
     # Error handling
-    - wrapcheck
     - errorlint
+
+    ## --- Stricter projects: uncomment these ---
+    # - wrapcheck      # requires wrapping all errors from external packages
+    # - usetesting     # enforces modern testing patterns (Go 1.24+)
+    # - exptostd       # flags x/exp functions now available in stdlib
 
     ## --- HTTP/API projects: uncomment these ---
     # - bodyclose      # checks HTTP response body is closed
@@ -72,4 +77,3 @@ linters:
           - goconst
           - gosec
           - gocritic
-          - wrapcheck
