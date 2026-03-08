@@ -73,7 +73,7 @@ func Run(cfg *config.ProjectConfig) error {
 				Value(&license),
 		),
 
-		// Group 2: Tooling
+		// Group 2: Build tooling
 		huh.NewGroup(
 			huh.NewConfirm().
 				Title("Include golangci-lint config?").
@@ -91,7 +91,10 @@ func Run(cfg *config.ProjectConfig) error {
 			huh.NewConfirm().
 				Title("Include GoReleaser?").
 				Value(&cfg.UseGoReleaser),
+		),
 
+		// Group 3: Extras
+		huh.NewGroup(
 			huh.NewConfirm().
 				Title("Include Dockerfile?").
 				Value(&cfg.UseDocker),
@@ -105,7 +108,7 @@ func Run(cfg *config.ProjectConfig) error {
 				Value(&cfg.UseRenovate),
 		),
 
-		// Group 3: Claude Code
+		// Group 4: Claude Code
 		huh.NewGroup(
 			huh.NewConfirm().
 				Title("Include CLAUDE.md + .claude/rules?").
@@ -116,7 +119,7 @@ func Run(cfg *config.ProjectConfig) error {
 				Value(&cfg.UseClaudeCI),
 		),
 
-		// Group 4: Service-specific
+		// Group 5: Service-specific
 		huh.NewGroup(
 			huh.NewSelect[string]().
 				Title("HTTP framework").
