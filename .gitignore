@@ -36,7 +36,8 @@ go.work.sum
 Thumbs.db
 
 # Demo
-demo.gif
+demo.tape
+record-demo.sh
 
 # AI assistants
 .gemini/
