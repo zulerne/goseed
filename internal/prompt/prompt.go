@@ -9,6 +9,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/huh"
 
 	"github.com/zulerne/goseed/internal/config"
@@ -25,10 +26,14 @@ func Run(cfg *config.ProjectConfig) error {
 	var buildTool string
 	var httpFramework string
 	var features []string
+	var ciFeatures []string
 	var claudeFeatures []string
 
+	km := huh.NewDefaultKeyMap()
+	km.MultiSelect.Toggle = key.NewBinding(key.WithKeys(" ", "x"), key.WithHelp("space", "toggle"))
+
 	form := huh.NewForm(
-		// Group 1: Project basics
+		// Group 1: Project identity
 		huh.NewGroup(
 			huh.NewInput().
 				Title("Project name").
@@ -61,7 +66,10 @@ func Run(cfg *config.ProjectConfig) error {
 					}
 					return nil
 				}),
+		),
 
+		// Group 2: Project type and license
+		huh.NewGroup(
 			huh.NewSelect[string]().
 				Title("Project type").
 				Options(
@@ -70,11 +78,6 @@ func Run(cfg *config.ProjectConfig) error {
 					huh.NewOption("HTTP service", "service"),
 				).
 				Value(&projectType),
-
-			huh.NewInput().
-				Title("Description").
-				Description("One-line project description (optional)").
-				Value(&cfg.Description),
 
 			huh.NewSelect[string]().
 				Title("License").
@@ -86,7 +89,7 @@ func Run(cfg *config.ProjectConfig) error {
 				Value(&license),
 		),
 
-		// Group 2: Tooling
+		// Group 3: Build tool
 		huh.NewGroup(
 			huh.NewSelect[string]().
 				Title("Build tool").
@@ -96,7 +99,10 @@ func Run(cfg *config.ProjectConfig) error {
 					huh.NewOption("None", "none"),
 				).
 				Value(&buildTool),
+		),
 
+		// Group 4: Optional features
+		huh.NewGroup(
 			huh.NewMultiSelect[string]().
 				Title("Optional features").
 				Options(
@@ -104,12 +110,24 @@ func Run(cfg *config.ProjectConfig) error {
 					huh.NewOption("GoReleaser", "goreleaser").Selected(cfg.UseGoReleaser),
 					huh.NewOption(".env.example", "env").Selected(cfg.UseEnvExample),
 					huh.NewOption("Dockerfile", "docker").Selected(cfg.UseDocker),
-					huh.NewOption("Dependabot", "dependabot").Selected(cfg.UseDependabot),
 				).
-				Value(&features),
+				Value(&features).
+				Filterable(false),
 		),
 
-		// Group 3: Claude Code
+		// Group 5: CI/CD
+		huh.NewGroup(
+			huh.NewMultiSelect[string]().
+				Title("CI/CD").
+				Options(
+					huh.NewOption("CI workflows (lint, test, vulncheck)", "ci").Selected(cfg.UseCI),
+					huh.NewOption("Dependabot (gomod + actions)", "dependabot").Selected(cfg.UseDependabot),
+				).
+				Value(&ciFeatures).
+				Filterable(false),
+		),
+
+		// Group 6: Claude Code
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
 				Title("Claude Code integration").
@@ -117,10 +135,11 @@ func Run(cfg *config.ProjectConfig) error {
 					huh.NewOption("CLAUDE.md + .claude/rules", "claude").Selected(cfg.UseClaude),
 					huh.NewOption("CI workflows (review + agent)", "claude-ci").Selected(cfg.UseClaudeCI),
 				).
-				Value(&claudeFeatures),
+				Value(&claudeFeatures).
+				Filterable(false),
 		),
 
-		// Group 4: Service-specific
+		// Group 7: Service-specific
 		huh.NewGroup(
 			huh.NewSelect[string]().
 				Title("HTTP framework").
@@ -132,7 +151,7 @@ func Run(cfg *config.ProjectConfig) error {
 		).WithHideFunc(func() bool {
 			return projectType != "service"
 		}),
-	).WithTheme(huh.ThemeCatppuccin())
+	).WithKeyMap(km).WithTheme(huh.ThemeCatppuccin())
 
 	if err := form.Run(); err != nil {
 		return fmt.Errorf("prompt: %w", err)
@@ -146,7 +165,8 @@ func Run(cfg *config.ProjectConfig) error {
 	cfg.UseGoReleaser = slices.Contains(features, "goreleaser")
 	cfg.UseDocker = slices.Contains(features, "docker")
 	cfg.UseEnvExample = slices.Contains(features, "env")
-	cfg.UseDependabot = slices.Contains(features, "dependabot")
+	cfg.UseCI = slices.Contains(ciFeatures, "ci")
+	cfg.UseDependabot = slices.Contains(ciFeatures, "dependabot")
 	cfg.UseClaude = slices.Contains(claudeFeatures, "claude")
 	cfg.UseClaudeCI = slices.Contains(claudeFeatures, "claude-ci")
 

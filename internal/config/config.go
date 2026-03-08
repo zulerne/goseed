@@ -8,8 +8,7 @@ type ProjectConfig struct {
 	ProjectName string // directory name and binary name
 	ModulePath  string // e.g. "github.com/user/myapp"
 	ProjectType string // "library" | "cli" | "service"
-	Description string // one-liner for README
-	GoVersion   string // e.g. "1.26"
+	GoVersion string // e.g. "1.26"
 	License     string // "MIT" | "Apache-2.0" | "none"
 
 	// Tooling
@@ -19,6 +18,7 @@ type ProjectConfig struct {
 	UseDocker     bool   // Dockerfile
 	UseEnvExample bool   // .env.example
 	UseDependabot bool   // .github/dependabot.yml
+	UseCI         bool   // ci.yml + dependency-review.yml
 
 	// Claude Code
 	UseClaude   bool // CLAUDE.md + .claude/rules/
@@ -45,6 +45,7 @@ func Defaults() ProjectConfig {
 		UseDocker:     false,
 		UseEnvExample: true,
 		UseDependabot: false,
+		UseCI:         true,
 		UseClaude:     false,
 		UseClaudeCI:   false,
 		HTTPFramework: "stdlib",

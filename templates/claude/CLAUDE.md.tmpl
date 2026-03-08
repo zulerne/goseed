@@ -1,7 +1,5 @@
 # {{ .ProjectName }}
-{{ if .Description }}
-{{ .Description }}
-{{ end }}
+
 ## Project structure
 {{ if eq .ProjectType "library" }}
 - `{{ .ProjectName }}.go` — main package
