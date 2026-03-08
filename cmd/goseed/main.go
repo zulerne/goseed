@@ -31,7 +31,7 @@ func newRootCmd() *cobra.Command {
 	var outputDir string
 
 	cmd := &cobra.Command{
-		Use:   "gostart",
+		Use:   "goseed",
 		Short: "Scaffold Go projects with best practices",
 		Long:  "Interactive CLI tool that generates Go projects (library, CLI, or service) with CI, linting, and Claude Code integration.",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -79,7 +79,7 @@ func newRootCmd() *cobra.Command {
 		Use:   "version",
 		Short: "Print version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("gostart %s (commit: %s)\n", version, commit)
+			fmt.Printf("goseed %s (commit: %s)\n", version, commit)
 		},
 	})
 

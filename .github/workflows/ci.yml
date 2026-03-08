@@ -30,7 +30,7 @@ jobs:
 
       - name: Integration test
         run: |
-          go run ./cmd/gostart --name test-cli --module github.com/test/test-cli --type cli --no-interactive
+          go run ./cmd/goseed --name test-cli --module github.com/test/test-cli --type cli --no-interactive
           cd test-cli && go build ./...
 
   lint:

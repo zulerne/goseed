@@ -1,9 +1,9 @@
 version: "3"
 
 vars:
-  BINARY_NAME: gostart
+  BINARY_NAME: goseed
   BUILD_DIR: ./bin
-  MAIN_PATH: ./cmd/gostart
+  MAIN_PATH: ./cmd/goseed
 
 tasks:
   run:

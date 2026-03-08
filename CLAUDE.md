@@ -1,10 +1,10 @@
-# gostart
+# goseed
 
 Interactive CLI tool that scaffolds Go projects (library, CLI, or service) with CI, linting, and Claude Code integration.
 
 ## Project structure
 
-- `cmd/gostart/main.go` — CLI entry point (cobra)
+- `cmd/goseed/main.go` — CLI entry point (cobra)
 - `internal/config/` — ProjectConfig struct and defaults
 - `internal/prompt/` — TUI form (charmbracelet/huh)
 - `internal/generator/` — file generation from templates

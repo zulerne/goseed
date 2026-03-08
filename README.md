@@ -1,17 +1,17 @@
-# gostart
+# goseed
 
 Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
 
 ## Install
 
 ```bash
-brew install zulerne/tap/gostart
+brew install zulerne/tap/goseed
 ```
 
 Or build from source:
 
 ```bash
-go install github.com/zulerne/goseed/cmd/gostart@latest
+go install github.com/zulerne/goseed/cmd/goseed@latest
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ go install github.com/zulerne/goseed/cmd/gostart@latest
 ### Interactive mode
 
 ```bash
-gostart
+goseed
 ```
 
 Walks you through 4 groups of questions (project basics, tooling, Claude Code, service-specific) and generates a ready-to-build project.
@@ -27,7 +27,7 @@ Walks you through 4 groups of questions (project basics, tooling, Claude Code, s
 ### Non-interactive mode
 
 ```bash
-gostart --name myapp --module github.com/user/myapp --type service --no-interactive
+goseed --name myapp --module github.com/user/myapp --type service --no-interactive
 ```
 
 ### Flags
