@@ -36,7 +36,7 @@ go.work.sum
 Thumbs.db
 
 # Demo
-demo.tape
+*.tape
 record-demo.sh
 social-preview.png
 

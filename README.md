@@ -13,7 +13,11 @@
 
 Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
 
-![demo](demo.gif)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="demo-dark.gif">
+  <source media="(prefers-color-scheme: light)" srcset="demo-light.gif">
+  <img alt="Demo" src="demo-light.gif">
+</picture>
 
 ## Install
 
