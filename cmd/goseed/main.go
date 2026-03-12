@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"strings"
 
@@ -31,9 +30,13 @@ func newRootCmd() *cobra.Command {
 	var outputDir string
 
 	cmd := &cobra.Command{
-		Use:   "goseed",
-		Short: "Scaffold Go projects with a clean foundation",
-		Long:  "Interactive CLI tool that scaffolds Go projects with CI, linting, and Claude Code integration.",
+		Use:     "goseed",
+		Short:   "Scaffold Go projects with a clean foundation",
+		Long: `Interactive CLI tool that scaffolds Go projects with CI, linting, and Claude Code integration.
+
+Run without flags to start the interactive TUI.
+Use --no-interactive with --name and --module to scaffold non-interactively.`,
+		Version: version + " (commit: " + commit + ")",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if !noInteractive {
 				if err := prompt.Run(&cfg); err != nil {
@@ -69,14 +72,6 @@ func newRootCmd() *cobra.Command {
 	f.BoolVar(&cfg.UseClaudeCI, "claude-ci", cfg.UseClaudeCI, "Include Claude CI workflows")
 	f.BoolVar(&noInteractive, "no-interactive", false, "Use flags and defaults only")
 	f.StringVar(&outputDir, "output-dir", ".", "Output directory")
-
-	cmd.AddCommand(&cobra.Command{
-		Use:   "version",
-		Short: "Print version information",
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("goseed %s (commit: %s)\n", version, commit)
-		},
-	})
 
 	return cmd
 }
