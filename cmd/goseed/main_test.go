@@ -52,15 +52,8 @@ func TestNewRootCmd(t *testing.T) {
 		}
 	}
 
-	var foundVersion bool
-	for _, sub := range cmd.Commands() {
-		if sub.Use == "version" {
-			foundVersion = true
-			break
-		}
-	}
-	if !foundVersion {
-		t.Error("expected version subcommand")
+	if cmd.Version == "" {
+		t.Error("expected Version to be set")
 	}
 }
 
