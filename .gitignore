@@ -42,5 +42,6 @@ social-preview.png
 
 # AI assistants
 .gemini/
+GEMINI.md
 !.claude/
 .claude/settings.local.json
