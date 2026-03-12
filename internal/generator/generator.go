@@ -64,7 +64,7 @@ func Generate(cfg *config.ProjectConfig, fsys fs.FS, outputDir string) error {
 		count++
 	}
 
-	fmt.Printf("  Created %s/ (%s)\n", cfg.ProjectName, cfg.ProjectType)
+	fmt.Printf("  Created %s/\n", cfg.ProjectName)
 	fmt.Printf("  %d files generated\n", count)
 
 	runPostGen(targetDir)

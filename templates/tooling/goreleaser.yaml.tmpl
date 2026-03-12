@@ -30,7 +30,7 @@ changelog:
       - "^docs:"
       - "^chore:"
       - "^ci:"
-{{ if eq .ProjectType "cli" }}
+
 brews:
   - repository:
       owner: {{ .GitHubOwner }}
@@ -39,4 +39,3 @@ brews:
     directory: Formula
     homepage: https://github.com/{{ .GitHubOwner }}/{{ .ProjectName }}
     description: "{{ .ProjectName }}"
-{{ end }}

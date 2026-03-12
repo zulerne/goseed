@@ -1,13 +1,10 @@
 # {{ .ProjectName }}
 
 ## Project structure
-{{ if eq .ProjectType "library" }}
-- `{{ .ProjectName }}.go` — main package
-- `{{ .ProjectName }}_test.go` — tests
-{{ else }}
-- `cmd/{{ .ProjectName }}/main.go` — CLI entry point
+
+- `cmd/{{ .ProjectName }}/main.go` — entry point
 - `internal/` — application packages
-{{ end }}
+
 ## Code Quality
 {{ if eq .BuildTool "taskfile" }}
 Always run `task lint` before committing. Run `task check` (lint + test) for full validation.

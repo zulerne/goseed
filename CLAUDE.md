@@ -1,6 +1,6 @@
 # goseed
 
-Interactive CLI tool that scaffolds Go projects (library, CLI, or service) with CI, linting, and Claude Code integration.
+Interactive CLI tool that scaffolds Go projects with a clean foundation — CI, linting, and Claude Code integration.
 
 ## Project structure
 

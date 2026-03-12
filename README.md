@@ -11,7 +11,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/zulerne/goseed.svg)](https://pkg.go.dev/github.com/zulerne/goseed)
 [![Release](https://img.shields.io/github/v/release/zulerne/goseed)](https://github.com/zulerne/goseed/releases)
 
-Interactive CLI tool that scaffolds Go projects with best practices — CI, linting, Claude Code integration, and more.
+Interactive CLI tool that scaffolds Go projects with a clean foundation — CI, linting, Claude Code integration, and more.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="demo-dark.gif">
@@ -39,12 +39,12 @@ go install github.com/zulerne/goseed/cmd/goseed@latest
 goseed
 ```
 
-Walks you through 4 groups of questions (project basics, tooling, Claude Code, service-specific) and generates a ready-to-build project.
+Walks you through 4 screens (project identity, license & build tool, features, automation) and generates a ready-to-build project.
 
 ### Non-interactive mode
 
 ```bash
-goseed --name myapp --module github.com/user/myapp --type service --no-interactive
+goseed --name myapp --module github.com/user/myapp --no-interactive
 ```
 
 ### Flags
@@ -53,14 +53,11 @@ goseed --name myapp --module github.com/user/myapp --type service --no-interacti
 |---|---|---|
 | `--name` | | Project name |
 | `--module` | | Go module path |
-| `--type` | | `library`, `cli`, or `service` |
-| `--description` | | One-line project description |
 | `--go-version` | `1.26` | Go version |
 | `--license` | `MIT` | `MIT`, `Apache-2.0`, or `none` |
 | `--build-tool` | `taskfile` | `taskfile`, `makefile`, or `none` |
-| `--http-framework` | `stdlib` | `stdlib` or `chi` (service only) |
 | `--linter` | `true` | Include golangci-lint config |
-| `--goreleaser` | `true` | Include GoReleaser |
+| `--goreleaser` | `false` | Include GoReleaser |
 | `--docker` | `false` | Include Dockerfile |
 | `--env-example` | `true` | Include .env.example |
 | `--dependabot` | `false` | Include Dependabot config |
@@ -69,35 +66,23 @@ goseed --name myapp --module github.com/user/myapp --type service --no-interacti
 | `--no-interactive` | `false` | Skip TUI, use flags + defaults |
 | `--output-dir` | `.` | Output directory |
 
-## Project Types
-
-### Library
-
-Generates a Go package with exported functions and table-driven tests.
-
-### CLI
-
-Generates a cobra-based CLI application with version subcommand and GoReleaser config.
-
-### Service
-
-Generates an HTTP service with graceful shutdown, health endpoint, config from environment, and optional Docker support.
-
 ## What's Generated
 
 Every project includes:
+- `cmd/{name}/main.go`, `internal/`
 - `.gitignore`, `.editorconfig`
 - `go.mod`, `README.md`
-- CI workflow (test + lint + govulncheck)
-- Dependency review workflow
+- GitHub issue & PR templates
 
 Optional (based on choices):
 - `.golangci.yml` — 17+ linters
 - `Taskfile.yml` or `Makefile`
 - `.goreleaser.yaml` + release workflow
-- `Dockerfile`
+- `Dockerfile` + `.dockerignore`
 - `.env.example`
 - `.github/dependabot.yml`
+- CI workflow (test + lint + govulncheck)
+- Dependency review workflow
 - `CLAUDE.md` + `.claude/rules/go.md`
 - Claude Code CI workflows
 - `LICENSE` (MIT or Apache 2.0)

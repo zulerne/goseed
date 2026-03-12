@@ -10,59 +10,20 @@ import (
 	"github.com/zulerne/goseed/internal/generator"
 )
 
-func TestGenerateLibrary(t *testing.T) {
+func TestGenerateMinimal(t *testing.T) {
 	dir := t.TempDir()
 	cfg := config.ProjectConfig{
-		ProjectName:   "testlib",
-		ModulePath:    "github.com/test/testlib",
-		ProjectType:   "library",
+		ProjectName:   "myapp",
+		ModulePath:    "github.com/test/myapp",
 		GoVersion:     "1.26",
 		License:       "MIT",
-		UseLinter:     true,
-		BuildTool:     "taskfile",
+		UseLinter:     false,
+		BuildTool:     "none",
 		UseGoReleaser: false,
-		UseDocker:     false,
-		UseClaude:     true,
-		UseClaudeCI:   false,
-		UseDependabot:   false,
-		GitHubOwner:   "test",
-		Year:          2026,
-	}
-
-	err := generator.Generate(&cfg, goseed.Templates, dir)
-	if err != nil {
-		t.Fatalf("Generate() error: %v", err)
-	}
-
-	projectDir := filepath.Join(dir, "testlib")
-	mustExist(t, projectDir, "testlib.go")
-	mustExist(t, projectDir, "testlib_test.go")
-	mustExist(t, projectDir, "go.mod")
-	mustExist(t, projectDir, ".gitignore")
-	mustExist(t, projectDir, ".golangci.yml")
-	mustExist(t, projectDir, "Taskfile.yml")
-	mustExist(t, projectDir, "LICENSE")
-	mustExist(t, projectDir, "CLAUDE.md")
-	mustExist(t, projectDir, ".claude/rules/go.md")
-	mustNotExist(t, projectDir, "Dockerfile")
-	mustNotExist(t, projectDir, "cmd")
-}
-
-func TestGenerateCLI(t *testing.T) {
-	dir := t.TempDir()
-	cfg := config.ProjectConfig{
-		ProjectName:   "mycli",
-		ModulePath:    "github.com/test/mycli",
-		ProjectType:   "cli",
-		GoVersion:     "1.26",
-		License:       "none",
-		UseLinter:     true,
-		BuildTool:     "makefile",
-		UseGoReleaser: true,
 		UseDocker:     false,
 		UseClaude:     false,
 		UseClaudeCI:   false,
-		UseDependabot:   true,
+		UseDependabot: false,
 		GitHubOwner:   "test",
 		Year:          2026,
 	}
@@ -72,25 +33,31 @@ func TestGenerateCLI(t *testing.T) {
 		t.Fatalf("Generate() error: %v", err)
 	}
 
-	projectDir := filepath.Join(dir, "mycli")
-	mustExist(t, projectDir, "cmd/mycli/main.go")
-	mustExist(t, projectDir, "internal/cli/root.go")
-	mustExist(t, projectDir, "internal/cli/version.go")
-	mustExist(t, projectDir, "Makefile")
-	mustExist(t, projectDir, ".goreleaser.yaml")
-	mustExist(t, projectDir, ".github/dependabot.yml")
-	mustNotExist(t, projectDir, "LICENSE")
+	projectDir := filepath.Join(dir, "myapp")
+	mustExist(t, projectDir, "cmd/myapp/main.go")
+	mustExist(t, projectDir, "internal/.gitkeep")
+	mustExist(t, projectDir, "go.mod")
+	mustExist(t, projectDir, ".gitignore")
+	mustExist(t, projectDir, ".editorconfig")
+	mustExist(t, projectDir, "README.md")
+	mustExist(t, projectDir, "LICENSE")
+	mustExist(t, projectDir, ".github/ISSUE_TEMPLATE/bug_report.yml")
+	mustExist(t, projectDir, ".github/ISSUE_TEMPLATE/feature_request.yml")
+	mustExist(t, projectDir, ".github/ISSUE_TEMPLATE/config.yml")
+	mustExist(t, projectDir, ".github/pull_request_template.md")
+	mustNotExist(t, projectDir, ".golangci.yml")
 	mustNotExist(t, projectDir, "Taskfile.yml")
+	mustNotExist(t, projectDir, "Makefile")
 	mustNotExist(t, projectDir, "Dockerfile")
+	mustNotExist(t, projectDir, ".dockerignore")
 	mustNotExist(t, projectDir, "CLAUDE.md")
 }
 
-func TestGenerateService(t *testing.T) {
+func TestGenerateFullFeatured(t *testing.T) {
 	dir := t.TempDir()
 	cfg := config.ProjectConfig{
-		ProjectName:   "mysvc",
-		ModulePath:    "github.com/test/mysvc",
-		ProjectType:   "service",
+		ProjectName:   "fullapp",
+		ModulePath:    "github.com/test/fullapp",
 		GoVersion:     "1.26",
 		License:       "Apache-2.0",
 		UseLinter:     true,
@@ -98,11 +65,11 @@ func TestGenerateService(t *testing.T) {
 		UseGoReleaser: true,
 		UseDocker:     true,
 		UseEnvExample: true,
+		UseCI:         true,
 		UseClaude:     true,
 		UseClaudeCI:   true,
-		UseDependabot:   true,
+		UseDependabot: true,
 		GitHubOwner:   "test",
-		HTTPFramework: "stdlib",
 		Year:          2026,
 	}
 
@@ -111,43 +78,83 @@ func TestGenerateService(t *testing.T) {
 		t.Fatalf("Generate() error: %v", err)
 	}
 
-	projectDir := filepath.Join(dir, "mysvc")
-	mustExist(t, projectDir, "cmd/mysvc/main.go")
-	mustExist(t, projectDir, "internal/handler/handler.go")
-	mustExist(t, projectDir, "internal/config/config.go")
-	mustExist(t, projectDir, "internal/server/server.go")
-	mustExist(t, projectDir, "Dockerfile")
-	mustNotExist(t, projectDir, "docker-compose.yml")
-	mustExist(t, projectDir, ".env.example")
+	projectDir := filepath.Join(dir, "fullapp")
+	mustExist(t, projectDir, "cmd/fullapp/main.go")
+	mustExist(t, projectDir, "internal/.gitkeep")
+	mustExist(t, projectDir, "go.mod")
+	mustExist(t, projectDir, ".golangci.yml")
+	mustExist(t, projectDir, "Taskfile.yml")
 	mustExist(t, projectDir, ".goreleaser.yaml")
+	mustExist(t, projectDir, "Dockerfile")
+	mustExist(t, projectDir, ".dockerignore")
+	mustExist(t, projectDir, ".env.example")
+	mustExist(t, projectDir, "CLAUDE.md")
+	mustExist(t, projectDir, ".claude/rules/go.md")
+	mustExist(t, projectDir, ".github/workflows/ci.yml")
+	mustExist(t, projectDir, ".github/workflows/dependency-review.yml")
+	mustExist(t, projectDir, ".github/workflows/release.yml")
 	mustExist(t, projectDir, ".github/workflows/claude-code-review.yml")
 	mustExist(t, projectDir, ".github/workflows/claude.yml")
-	mustExist(t, projectDir, ".github/workflows/release.yml")
+	mustExist(t, projectDir, ".github/dependabot.yml")
+	mustExist(t, projectDir, ".github/ISSUE_TEMPLATE/bug_report.yml")
+	mustExist(t, projectDir, ".github/pull_request_template.md")
 	mustExist(t, projectDir, "LICENSE")
 }
 
+func TestGenerateMakefile(t *testing.T) {
+	dir := t.TempDir()
+	cfg := config.ProjectConfig{
+		ProjectName:   "mkapp",
+		ModulePath:    "github.com/test/mkapp",
+		GoVersion:     "1.26",
+		License:       "none",
+		UseLinter:     true,
+		BuildTool:     "makefile",
+		UseGoReleaser: false,
+		UseDocker:     false,
+		UseClaude:     false,
+		UseClaudeCI:   false,
+		UseDependabot: false,
+		GitHubOwner:   "test",
+		Year:          2026,
+	}
+
+	err := generator.Generate(&cfg, goseed.Templates, dir)
+	if err != nil {
+		t.Fatalf("Generate() error: %v", err)
+	}
+
+	projectDir := filepath.Join(dir, "mkapp")
+	mustExist(t, projectDir, "Makefile")
+	mustExist(t, projectDir, ".golangci.yml")
+	mustNotExist(t, projectDir, "Taskfile.yml")
+	mustNotExist(t, projectDir, "LICENSE")
+	mustNotExist(t, projectDir, ".goreleaser.yaml")
+}
+
 func TestManifestConditions(t *testing.T) {
-	lib := &config.ProjectConfig{ProjectType: "library", UseLinter: true, BuildTool: "taskfile"}
-	cli := &config.ProjectConfig{ProjectType: "cli", UseGoReleaser: true}
-	svc := &config.ProjectConfig{ProjectType: "service", UseDocker: true}
+	minimal := &config.ProjectConfig{UseLinter: false, BuildTool: "none"}
+	full := &config.ProjectConfig{UseLinter: true, BuildTool: "taskfile", UseGoReleaser: true, UseDocker: true}
 
 	for _, fm := range generator.Manifest {
-		// Library should not have Dockerfile or cmd/
-		if fm.Source == "docker/Dockerfile.tmpl" && fm.Condition != nil && fm.Condition(lib) {
-			t.Error("library should not include Dockerfile")
-		}
-		if fm.Source == "service/main.go.tmpl" && fm.Condition != nil && fm.Condition(lib) {
-			t.Error("library should not include service main.go")
+		// Minimal should not have linter config
+		if fm.Source == "tooling/golangci.yml.tmpl" && fm.Condition != nil && fm.Condition(minimal) {
+			t.Error("minimal config should not include golangci.yml")
 		}
 
-		// CLI should have goreleaser when enabled
-		if fm.Source == "tooling/goreleaser.yaml.tmpl" && fm.Condition != nil && !fm.Condition(cli) {
-			t.Error("CLI with UseGoReleaser should include goreleaser")
+		// Full should have goreleaser when enabled
+		if fm.Source == "tooling/goreleaser.yaml.tmpl" && fm.Condition != nil && !fm.Condition(full) {
+			t.Error("full config with UseGoReleaser should include goreleaser")
 		}
 
-		// Service should have Dockerfile when enabled
-		if fm.Source == "docker/Dockerfile.tmpl" && fm.Condition != nil && !fm.Condition(svc) {
-			t.Error("service with UseDocker should include Dockerfile")
+		// Full should have Dockerfile when enabled
+		if fm.Source == "docker/Dockerfile.tmpl" && fm.Condition != nil && !fm.Condition(full) {
+			t.Error("full config with UseDocker should include Dockerfile")
+		}
+
+		// Full should have dockerignore when enabled
+		if fm.Source == "docker/dockerignore" && fm.Condition != nil && !fm.Condition(full) {
+			t.Error("full config with UseDocker should include .dockerignore")
 		}
 	}
 }

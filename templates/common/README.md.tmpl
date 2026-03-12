@@ -8,21 +8,12 @@
 {{ if eq .BuildTool "taskfile" }}- [Task](https://taskfile.dev/installation/) (optional){{ end }}{{ if eq .BuildTool "makefile" }}- Make (optional){{ end }}
 
 ### Installation
-{{ if eq .ProjectType "library" }}
-```bash
-go get {{ .ModulePath }}
-```
-{{ else }}
+
 ```bash
 go install {{ .ModulePath }}/cmd/{{ .ProjectName }}@latest
 ```
-{{ end }}
-{{ if eq .ProjectType "library" }}## Usage
 
-```go
-import "{{ .ModulePath }}"
-```
-{{ else }}## Usage
+## Usage
 {{ if eq .BuildTool "taskfile" }}
 ```bash
 task run
@@ -35,7 +26,7 @@ make run
 ```bash
 go run ./cmd/{{ .ProjectName }}
 ```
-{{ end }}{{ end }}
+{{ end }}
 ## Development
 {{ if eq .BuildTool "taskfile" }}
 | Command | Description |

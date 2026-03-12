@@ -16,9 +16,8 @@ func TestDefaults(t *testing.T) {
 		{"GoVersion", cfg.GoVersion, "1.26"},
 		{"License", cfg.License, "MIT"},
 		{"BuildTool", cfg.BuildTool, "taskfile"},
-		{"HTTPFramework", cfg.HTTPFramework, "stdlib"},
 		{"UseLinter", cfg.UseLinter, true},
-		{"UseGoReleaser", cfg.UseGoReleaser, true},
+		{"UseGoReleaser", cfg.UseGoReleaser, false},
 		{"UseEnvExample", cfg.UseEnvExample, true},
 		{"UseCI", cfg.UseCI, true},
 		{"UseDocker", cfg.UseDocker, false},
@@ -39,9 +38,6 @@ func TestDefaults(t *testing.T) {
 	}
 	if cfg.ModulePath != "" {
 		t.Errorf("ModulePath = %q, want empty", cfg.ModulePath)
-	}
-	if cfg.ProjectType != "" {
-		t.Errorf("ProjectType = %q, want empty", cfg.ProjectType)
 	}
 	if cfg.GitHubOwner != "" {
 		t.Errorf("GitHubOwner = %q, want empty", cfg.GitHubOwner)

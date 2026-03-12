@@ -32,8 +32,8 @@ func newRootCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "goseed",
-		Short: "Scaffold Go projects with best practices",
-		Long:  "Interactive CLI tool that generates Go projects (library, CLI, or service) with CI, linting, and Claude Code integration.",
+		Short: "Scaffold Go projects with a clean foundation",
+		Long:  "Interactive CLI tool that scaffolds Go projects with CI, linting, and Claude Code integration.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if !noInteractive {
 				if err := prompt.Run(&cfg); err != nil {
@@ -46,9 +46,6 @@ func newRootCmd() *cobra.Command {
 				if cfg.ModulePath == "" {
 					return errors.New("--module is required in non-interactive mode")
 				}
-				if cfg.ProjectType == "" {
-					return errors.New("--type is required in non-interactive mode")
-				}
 				cfg.GitHubOwner = inferOwner(cfg.ModulePath)
 			}
 
@@ -59,11 +56,9 @@ func newRootCmd() *cobra.Command {
 	f := cmd.Flags()
 	f.StringVar(&cfg.ProjectName, "name", "", "Project name")
 	f.StringVar(&cfg.ModulePath, "module", "", "Go module path")
-	f.StringVar(&cfg.ProjectType, "type", "", "Project type: library, cli, service")
 	f.StringVar(&cfg.GoVersion, "go-version", cfg.GoVersion, "Go version")
 	f.StringVar(&cfg.License, "license", cfg.License, "License: MIT, Apache-2.0, none")
 	f.StringVar(&cfg.BuildTool, "build-tool", cfg.BuildTool, "Build tool: taskfile, makefile, none")
-	f.StringVar(&cfg.HTTPFramework, "http-framework", cfg.HTTPFramework, "HTTP framework: stdlib, chi")
 	f.BoolVar(&cfg.UseLinter, "linter", cfg.UseLinter, "Include golangci-lint config")
 	f.BoolVar(&cfg.UseGoReleaser, "goreleaser", cfg.UseGoReleaser, "Include GoReleaser")
 	f.BoolVar(&cfg.UseCI, "ci", cfg.UseCI, "Include CI workflows")

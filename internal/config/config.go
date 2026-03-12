@@ -7,15 +7,14 @@ type ProjectConfig struct {
 	// Core (always asked)
 	ProjectName string // directory name and binary name
 	ModulePath  string // e.g. "github.com/user/myapp"
-	ProjectType string // "library" | "cli" | "service"
-	GoVersion string // e.g. "1.26"
+	GoVersion   string // e.g. "1.26"
 	License     string // "MIT" | "Apache-2.0" | "none"
 
 	// Tooling
 	UseLinter     bool   // .golangci.yml
 	BuildTool     string // "taskfile" | "makefile" | "none"
 	UseGoReleaser bool   // .goreleaser.yaml
-	UseDocker     bool   // Dockerfile
+	UseDocker     bool   // Dockerfile + .dockerignore
 	UseEnvExample bool   // .env.example
 	UseDependabot bool   // .github/dependabot.yml
 	UseCI         bool   // ci.yml + dependency-review.yml
@@ -26,9 +25,6 @@ type ProjectConfig struct {
 
 	// Derived
 	GitHubOwner string // inferred from ModulePath
-
-	// Service-specific
-	HTTPFramework string // "stdlib" | "chi"
 
 	// Computed at generation time
 	Year int
@@ -41,14 +37,13 @@ func Defaults() ProjectConfig {
 		License:       "MIT",
 		UseLinter:     true,
 		BuildTool:     "taskfile",
-		UseGoReleaser: true,
+		UseGoReleaser: false,
 		UseDocker:     false,
 		UseEnvExample: true,
 		UseDependabot: false,
 		UseCI:         true,
 		UseClaude:     false,
 		UseClaudeCI:   false,
-		HTTPFramework: "stdlib",
 		Year:          time.Now().Year(),
 	}
 }

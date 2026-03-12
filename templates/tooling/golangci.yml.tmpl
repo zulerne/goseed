@@ -27,18 +27,10 @@ linters:
     - unparam        # detects unused function parameters
     # Error handling
     - errorlint
-{{ if eq .ProjectType "service" }}
-    # HTTP/API
-    - bodyclose      # checks HTTP response body is closed
-    - noctx          # checks that http requests use context
-    # slog
-    - sloglint       # consistent log/slog usage
-{{ end }}
     ## --- Stricter projects: uncomment these ---
     # - wrapcheck      # requires wrapping all errors from external packages
     # - usetesting     # enforces modern testing patterns (Go 1.24+)
     # - exptostd       # flags x/exp functions now available in stdlib
-{{ if ne .ProjectType "service" }}
     ## --- HTTP/API projects: uncomment these ---
     # - bodyclose      # checks HTTP response body is closed
     # - noctx          # checks that http requests use context
@@ -47,7 +39,7 @@ linters:
     # - rowserrcheck   # checks sql.Rows.Err is checked
     ## --- slog users: uncomment this ---
     # - sloglint       # consistent log/slog usage
-{{ end }}
+
   settings:
     govet:
       enable:

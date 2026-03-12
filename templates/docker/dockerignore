@@ -1,0 +1,11 @@
+.git
+.github
+.claude
+.golangci.yml
+Taskfile.yml
+Makefile
+README.md
+LICENSE
+*.md
+coverage.out
+coverage.html

@@ -21,13 +21,10 @@ var validName = regexp.MustCompile(`^[a-z][a-z0-9-]*$`)
 func Run(cfg *config.ProjectConfig) error {
 	username := guessGitHubUser()
 
-	var projectType string
 	var license string
 	var buildTool string
-	var httpFramework string
 	var features []string
-	var ciFeatures []string
-	var claudeFeatures []string
+	var automation []string
 
 	km := huh.NewDefaultKeyMap()
 	km.MultiSelect.Toggle = key.NewBinding(key.WithKeys(" ", "x"), key.WithHelp("space", "toggle"))
@@ -72,17 +69,8 @@ func Run(cfg *config.ProjectConfig) error {
 				}),
 		),
 
-		// Group 2: Project type and license
+		// Group 2: License and build tool
 		huh.NewGroup(
-			huh.NewSelect[string]().
-				Title("Project type").
-				Options(
-					huh.NewOption("Library", "library"),
-					huh.NewOption("CLI application", "cli"),
-					huh.NewOption("HTTP service", "service"),
-				).
-				Value(&projectType),
-
 			huh.NewSelect[string]().
 				Title("License").
 				Options(
@@ -91,10 +79,7 @@ func Run(cfg *config.ProjectConfig) error {
 					huh.NewOption("None", "none"),
 				).
 				Value(&license),
-		),
 
-		// Group 3: Build tool
-		huh.NewGroup(
 			huh.NewSelect[string]().
 				Title("Build tool").
 				Options(
@@ -111,68 +96,43 @@ func Run(cfg *config.ProjectConfig) error {
 				Title("Optional features").
 				Options(
 					huh.NewOption("golangci-lint", "linter").Selected(cfg.UseLinter),
-					huh.NewOption("GoReleaser", "goreleaser").Selected(cfg.UseGoReleaser),
 					huh.NewOption(".env.example", "env").Selected(cfg.UseEnvExample),
+					huh.NewOption("GoReleaser", "goreleaser").Selected(cfg.UseGoReleaser),
 					huh.NewOption("Dockerfile", "docker").Selected(cfg.UseDocker),
 				).
 				Value(&features).
 				Filterable(false),
 		),
 
-		// Group 5: CI/CD
+		// Group 4: CI/CD and Claude Code
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
-				Title("CI/CD").
+				Title("Automation").
 				Options(
 					huh.NewOption("CI workflows (lint, test, vulncheck)", "ci").Selected(cfg.UseCI),
 					huh.NewOption("Dependabot (gomod + actions)", "dependabot").Selected(cfg.UseDependabot),
-				).
-				Value(&ciFeatures).
-				Filterable(false),
-		),
-
-		// Group 6: Claude Code
-		huh.NewGroup(
-			huh.NewMultiSelect[string]().
-				Title("Claude Code integration").
-				Options(
 					huh.NewOption("CLAUDE.md + .claude/rules", "claude").Selected(cfg.UseClaude),
-					huh.NewOption("CI workflows (review + agent)", "claude-ci").Selected(cfg.UseClaudeCI),
+					huh.NewOption("Claude CI (review + agent)", "claude-ci").Selected(cfg.UseClaudeCI),
 				).
-				Value(&claudeFeatures).
+				Value(&automation).
 				Filterable(false),
 		),
-
-		// Group 7: Service-specific
-		huh.NewGroup(
-			huh.NewSelect[string]().
-				Title("HTTP framework").
-				Options(
-					huh.NewOption("stdlib (net/http)", "stdlib"),
-					huh.NewOption("chi", "chi"),
-				).
-				Value(&httpFramework),
-		).WithHideFunc(func() bool {
-			return projectType != "service"
-		}),
 	).WithKeyMap(km).WithTheme(huh.ThemeCatppuccin())
 
 	if err := form.Run(); err != nil {
 		return fmt.Errorf("prompt: %w", err)
 	}
 
-	cfg.ProjectType = projectType
 	cfg.License = license
 	cfg.BuildTool = buildTool
-	cfg.HTTPFramework = httpFramework
 	cfg.UseLinter = slices.Contains(features, "linter")
 	cfg.UseGoReleaser = slices.Contains(features, "goreleaser")
 	cfg.UseDocker = slices.Contains(features, "docker")
 	cfg.UseEnvExample = slices.Contains(features, "env")
-	cfg.UseCI = slices.Contains(ciFeatures, "ci")
-	cfg.UseDependabot = slices.Contains(ciFeatures, "dependabot")
-	cfg.UseClaude = slices.Contains(claudeFeatures, "claude")
-	cfg.UseClaudeCI = slices.Contains(claudeFeatures, "claude-ci")
+	cfg.UseCI = slices.Contains(automation, "ci")
+	cfg.UseDependabot = slices.Contains(automation, "dependabot")
+	cfg.UseClaude = slices.Contains(automation, "claude")
+	cfg.UseClaudeCI = slices.Contains(automation, "claude-ci")
 
 	// Infer GitHubOwner from ModulePath
 	cfg.GitHubOwner = inferOwner(cfg.ModulePath)

@@ -34,13 +34,21 @@ func TestNewRootCmd(t *testing.T) {
 	}
 
 	flags := []string{
-		"name", "module", "type", "go-version", "license", "build-tool",
-		"http-framework", "linter", "goreleaser", "ci", "docker", "env-example",
+		"name", "module", "go-version", "license", "build-tool",
+		"linter", "goreleaser", "ci", "docker", "env-example",
 		"dependabot", "claude", "claude-ci", "no-interactive", "output-dir",
 	}
 	for _, name := range flags {
 		if cmd.Flags().Lookup(name) == nil {
 			t.Errorf("expected flag %q to exist", name)
+		}
+	}
+
+	// Removed flags should not exist
+	removedFlags := []string{"type", "http-framework"}
+	for _, name := range removedFlags {
+		if cmd.Flags().Lookup(name) != nil {
+			t.Errorf("expected flag %q to NOT exist", name)
 		}
 	}
 
@@ -64,18 +72,13 @@ func TestNonInteractiveValidation(t *testing.T) {
 	}{
 		{
 			"missing name",
-			[]string{"--no-interactive", "--module", "github.com/x/y", "--type", "cli"},
+			[]string{"--no-interactive", "--module", "github.com/x/y"},
 			"--name is required",
 		},
 		{
 			"missing module",
-			[]string{"--no-interactive", "--name", "foo", "--type", "cli"},
+			[]string{"--no-interactive", "--name", "foo"},
 			"--module is required",
-		},
-		{
-			"missing type",
-			[]string{"--no-interactive", "--name", "foo", "--module", "github.com/x/y"},
-			"--type is required",
 		},
 	}
 	for _, tt := range tests {
@@ -105,7 +108,6 @@ func TestNonInteractiveGenerate(t *testing.T) {
 		"--no-interactive",
 		"--name", "testapp",
 		"--module", "github.com/test/testapp",
-		"--type", "cli",
 		"--output-dir", dir,
 	})
 
